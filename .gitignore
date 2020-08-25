@@ -3,3 +3,4 @@ __pycache__/
 *.npy
 *.h5
 *.pkl
+.DS_Store
