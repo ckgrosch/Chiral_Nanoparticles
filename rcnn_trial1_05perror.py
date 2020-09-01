@@ -12,8 +12,8 @@ from sklearn import utils
 from tensorflow.keras.backend import clear_session
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
-save_weights = '/global/scratch/cgroschner/chiral_nanoparticles/rcnnV1_again_chirality_classification_00pwrongleftrightlabels_weights_20200821.h5'
-save_history = '/global/scratch/cgroschner/chiral_nanoparticles/rcnnV1_again_chirality_classification_00pwrongleftrightlabels_history_20200821.h5'
+save_weights = '/global/scratch/cgroschner/chiral_nanoparticles/rcnnV1_again_chirality_classification_05pwrongleftrightlabels_weights_20200821.h5'
+save_history = '/global/scratch/cgroschner/chiral_nanoparticles/rcnnV1_again_chirality_classification_05pwrongleftrightlabels_history_20200821.h5'
 
 right_images = np.load('/global/scratch/cgroschner/chiral_nanoparticles/20200514_right__Chiral_D_Large_TIFF_Cropped_four_rows_sel_NPs_rotated.npy')
 
@@ -32,7 +32,14 @@ for img in right_images:
 new_left_images = np.array(new_left_images)
 new_right_images = np.array(new_right_images)
 
+split = int(191*0.05)
 
+
+for idx in np.arange(0,split):
+    new_right_images[idx] = np.fliplr(new_right_images[idx])
+
+for idx in np.arange(0,split):
+    new_left_images[idx] = np.fliplr(new_left_images[idx])
 
 right_img_shuff, right_label_shuff = utils.shuffle(new_right_images[:191], new_right_labels[:191],random_state=0)
 left_img_shuff, left_label_shuff = utils.shuffle(new_left_images[:191], new_left_labels[:191],random_state=0)
@@ -40,7 +47,16 @@ left_img_shuff, left_label_shuff = utils.shuffle(new_left_images[:191], new_left
 X_train = np.concatenate((right_img_shuff[:191],left_img_shuff[:191]),axis =0)
 Y_train = np.concatenate((right_label_shuff[:191],left_label_shuff[:191]),axis = 0)
 
+split = int(95*0.05)
 
+flipped_right_indices = np.random.choice(np.arange(191,286),split,replace=False)
+flipped_left_indices = np.random.choice(np.arange(191,286),split,replace=False)
+
+for idx in np.arange(191,191+split):
+    new_right_images[idx] = np.fliplr(new_right_images[idx])
+
+for idx in np.arange(191,191+split):
+    new_left_images[idx] = np.fliplr(new_left_images[idx])
 
 right_img_shuff, right_label_shuff = utils.shuffle(new_right_images[191:286], new_right_labels[191:286],random_state=0)
 left_img_shuff, left_label_shuff = utils.shuffle(new_left_images[191:286], new_left_labels[191:286],random_state=0)
