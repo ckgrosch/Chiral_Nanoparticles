@@ -12,8 +12,8 @@ from sklearn import utils
 from tensorflow.keras.backend import clear_session
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
-save_weights = '/global/scratch/cgroschner/chiral_nanoparticles/chirality_classification_00pwrongleftrightlabels_weights_v2_20200824.h5'
-save_history = '/global/scratch/cgroschner/chiral_nanoparticles/chirality_classification_00pwrongleftrightlabels_history_v2_20200824.h5'
+save_weights = '/global/scratch/cgroschner/chiral_nanoparticles/chirality_classification_00pwrongleftrightlabels_weights_v3_20200824.h5'
+save_history = '/global/scratch/cgroschner/chiral_nanoparticles/chirality_classification_00pwrongleftrightlabels_history_v3_20200824.h5'
 
 right_images = np.load('/global/scratch/cgroschner/chiral_nanoparticles/20200514_right__Chiral_D_Large_TIFF_Cropped_four_rows_sel_NPs_rotated.npy')
 # right_labels = [[1,0] for i in np.arange(0,len(right_images))]
@@ -29,7 +29,7 @@ new_right_labels = []
 
 for img in right_images:
     new_left_images.append(np.fliplr(img))
-    new_left_labels.append([0])
+    new_left_labels.append([-1])
     new_right_images.append(img)
     new_right_labels.append([1])
 new_left_images = np.array(new_left_images)
@@ -101,9 +101,9 @@ modelE.add(Dense(64))
 modelE.add(Activation('relu'))
 modelE.add(Dropout(0.5))
 modelE.add(Dense(1))
-modelE.add(Activation('softmax'))
+modelE.add(Activation('tanh'))
 
-modelE.compile(loss='binary_crossentropy',
+modelE.compile(loss='hinge',
               optimizer='Adadelta',
               metrics=['accuracy'])
 
