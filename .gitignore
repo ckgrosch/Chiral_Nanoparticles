@@ -4,3 +4,10 @@ __pycache__/
 *.h5
 *.pkl
 .DS_Store
+*.tif
+*.tiff
+*.png
+*.pptx
+pytorch-nested-unet/
+particle_segmentation/
+segmentation_labels/
